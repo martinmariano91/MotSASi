@@ -46,8 +46,8 @@ MotSASi has to be run in different steps:
     
     Use the Unix Termial. Locate in the folder that contains this script and run it from there.
     
-    In the command line put the regular expression of the motif that you want to study, this expression but separated by dots and the name of this motif.
-    (Everything according to ELM nomenclature. i.e. python3 MotSASi_pipeline NP.[YF] N.P.x.YF TB_PTB)
+    In the command line put the regular expression of the motif that you want to study, this expression but separated by dots and the ELM name of this motif.
+    (Everything according to ELM nomenclature. i.e. python3 MotSASi_1.py [RK]P[^P][^P]L.[LIVMF] RK.P.^P.^P.L.x.LIVMF DOC_MAPK_JIP1_4)
     
     This script builds a "motif specific folder" where all the outputs are stored and is located in the previous folder from where the script is run.
 
