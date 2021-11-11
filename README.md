@@ -7,7 +7,7 @@ https://www.biorxiv.org/content/10.1101/2021.08.05.455287v1
 
 ----
 
-MotSASi is an strategy for improving the prediction of functional SLiMs using genomic variant information and structural data.
+MotSASi is a strategy for improving the prediction of functional SLiMs using genomic variant information and structural data.
 If you find this strategy useful, please cite us.
 
 ----
