@@ -18,6 +18,7 @@ If you find this strategy useful, please cite us.
 MotSASi has to be run in different steps:
 
 * 1 - MotSASi_1.py 
+    
     -h or -help:
     
     Searchs the motif of interest in the human proteome. 
@@ -38,7 +39,7 @@ MotSASi has to be run in different steps:
     
     Collects GO terms for the positive control (from UniProt).
       
-    For running: 
+    <ins>For running:</ins>
     
     MotSASi_1.py is a python3 script.
     
@@ -50,6 +51,7 @@ MotSASi has to be run in different steps:
     This script builds a "motif specific folder" where all the outputs are stored and is located in the previous folder from where the script is run.
 
 * 2 - MotSASi_2.py (in progress)
+    
     -h or -help:
       
      Gets the features of the positive control group of this motif (Tolerance Matrix, ConservationScore, Secondary Structure Probability, Relative Position).
@@ -64,7 +66,7 @@ MotSASi has to be run in different steps:
      
      Adds this information to the "motif_name_motif.csv" file.
       
-     For running:
+     <ins>For running:</ins>
      
      Use the same parameter arquitecture of the MotSASi_1.py script
       
