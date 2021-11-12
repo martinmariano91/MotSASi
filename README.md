@@ -12,9 +12,9 @@ If you find this strategy useful, please cite us.
 
 ----
 
-**For running MotSASi Python2.7, Python3.7, FoldX and ClustalO must be installed previously.**
+**For running MotSASi Python2.7, Python3.7, C-Shell (csh) package, Biopython package, FoldX and ClustalO must be installed previously.**
 
-**Biopython package must be previously installed too.** It is recommended to run the scripts within Anaconda Environment.
+It is recommended to run the scripts within Anaconda Environment. The Jpred API is included in the MotSASi folder.
 
 MotSASi has to be run in different steps:
 
