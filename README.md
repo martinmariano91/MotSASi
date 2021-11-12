@@ -5,9 +5,12 @@ Martín M, Modenutti CP, Nicola JP and Martí MA
 
 https://www.biorxiv.org/content/10.1101/2021.08.05.455287v1
 
+(under major revision in *Biochimie*)
+
 ----
 
 MotSASi is a strategy for improving the prediction of functional SLiMs using genomic variant information and structural data.
+
 If you find this strategy useful, please cite us.
 
 ----
