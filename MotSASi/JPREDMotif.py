@@ -14,6 +14,9 @@ from Bio.SeqRecord import SeqRecord
 import seaborn as sns
 import matplotlib.pyplot as plt
 import subprocess
+import urllib
+import matplotlib as mpl
+mpl.rcParams.update(mpl.rcParamsDefault)
 
 #%%
 def motifs_fastas(ID, p, mot):
@@ -23,10 +26,20 @@ def motifs_fastas(ID, p, mot):
     Out: Fasta sequence.'''
     mot = mot.split('.')
     LM = len(mot)
-    lectura_fasta = SeqIO.parse('../UniProt-Proteome.fasta','fasta')
+    fastas = []
+    lectura_fasta = SeqIO.parse('../uniprot_sprot_h.fasta','fasta')
     for seq_record in lectura_fasta:
         if seq_record.id.split('|')[1] == ID:
-            fastas = []
+            if p > 100:
+                seq = str(seq_record.seq)[p-100:p+100+LM]
+                fastas += [SeqRecord(Seq(seq), id=ID+'_'+str(p), description='')]
+            elif p <= 100:
+                seq = str(seq_record.seq)[0:p+100+LM]
+                fastas += [SeqRecord(Seq(seq), id=ID+'_'+str(p), description='')]
+            return fastas
+        else:
+            handle = urllib.request.urlopen("http://www.uniprot.org/uniprot/"+ID+".xml")
+            seq_record = SeqIO.read(handle, "uniprot-xml")
             if p > 100:
                 seq = str(seq_record.seq)[p-100:p+100+LM]
                 fastas += [SeqRecord(Seq(seq), id=ID+'_'+str(p), description='')]
@@ -47,7 +60,9 @@ def jpred_run(positive_ctrl, mot, motif_name):
     UniMotifs = positive_ctrl
     secuencias = []
     for ID, p in UniMotifs:
-        secuencias += motifs_fastas(ID, p, mot)
+        seq_ = motifs_fastas(ID, p, mot)
+        if len(seq_)>0:
+            secuencias += seq_
     SeqIO.write(secuencias, motif_name+'.fasta','fasta')
     command_line1 = ['./prepareInputs.csh', motif_name+'.fasta']
     subprocess.run(command_line1, stdout=subprocess.DEVNULL)    

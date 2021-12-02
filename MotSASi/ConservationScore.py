@@ -21,6 +21,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import subprocess
 import os
+import matplotlib as mpl
+mpl.rcParams.update(mpl.rcParamsDefault)
 
 
 def ConservationScore(df, mot, motif_name, positive_ctrl):
@@ -86,11 +88,11 @@ def ConservationScore(df, mot, motif_name, positive_ctrl):
     
     df_score.to_csv('../'+motif_name+'_motif/ConservationScore'+motif_name+'_positives.csv', sep='\t')
     
-    plt.figure(figsize=(8, 4))
+    plt.figure(figsize=(8, 4), facecolor="w")
     sns.boxplot(data=df_score.T, color='white', width=0.2, orient='h')
     plt.xlabel('Conservation Score')
     plt.xlim(0.65, 0.95)
-    plt.savefig('../'+motif_name+'_motif/ConservationScore'+motif_name+'_positives.png')
+    plt.savefig('../'+motif_name+'_motif/ConservationScore'+motif_name+'_positives.png', bbox_inches = "tight")
 
 
         

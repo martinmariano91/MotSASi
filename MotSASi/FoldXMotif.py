@@ -23,8 +23,64 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set()
 from Bio.PDB import PDBParser, PPBuilder
+import re
 
-def foldx_parameters(i, protein_pdb, motif_name, df):
+def dataframe_pdb(pdb, uniprotid):
+    ''' Builds a DataFrame from the info in the pdb file.
+        This DF have the UniProtID that each chain contains.'''
+    df_pdb = pd.read_csv(pdb+'/'+pdb+'.pdb', sep='\t')
+    df_pdb = df_pdb[df_pdb.iloc[:, 0].str.startswith('DBREF')]
+    df_pdb.columns = ['Column']
+    chain_uniprotid = pd.DataFrame()
+    chain_uniprotid['Chain'] = df_pdb.Column.apply(lambda x: x.split()[2])
+    chain_uniprotid['UniProtID'] = df_pdb.Column.apply(lambda x: x.split()[6])
+    chain_uniprotid = chain_uniprotid[chain_uniprotid['UniProtID']==uniprotid]
+    chains = chain_uniprotid.Chain.tolist()
+    return chains
+
+def motif_pdb(chain, motif):
+    ''' Searches for the motif in the peptides chains of the PDB.
+        If the motif is found gets the chain and the position
+        where the motif starts.'''
+    ppb = PPBuilder()
+    for pp in ppb.build_peptides(chain):
+        seq = pp.get_sequence()      
+        motif_ = re.search(motif, str(seq))
+        if motif_ != None:
+            protein_motif = motif_.group()
+            motif_position = motif_.start()
+            peptide_number = pp[0].get_id()[1]
+            start_position = peptide_number+motif_position
+            peptide_chain = chain.id
+            break
+        else:
+            peptide_chain = None
+            start_position = None
+            protein_motif = None
+    return peptide_chain, start_position, protein_motif
+
+def motif_pdb2(chain, motif):
+    ''' Searches for the motif in the peptides chains of the PDB.
+        If the motif is found gets the chain and the position
+        where the motif starts.'''
+    ppb = PPBuilder()
+    for pp in ppb.build_peptides(chain):
+        seq = pp.get_sequence()    
+        motif_ = re.search(motif, str(seq))
+        if motif_ != None and len(seq)<30:
+            protein_motif = motif_.group()
+            motif_position = motif_.start()
+            peptide_number = pp[0].get_id()[1]
+            start_position = peptide_number+motif_position
+            peptide_chain = chain.id
+            break
+        else:
+            peptide_chain = None
+            start_position = None
+            protein_motif = None
+    return peptide_chain, start_position, protein_motif
+
+def foldx_parameters(i, protein_pdb, motif, motif_name, df):
     ''' Create the Parameters for running FoldX.
     In: index of ELM dataframe with the proteins that have PDBs,
         ELM datafrmae, motif_name (ELMIdentifier), 
@@ -33,26 +89,24 @@ def foldx_parameters(i, protein_pdb, motif_name, df):
         protein motif, and starting position of the motif in the crystal'''
     pdb = protein_pdb.loc[i, 'PDB']
     uniprotid = protein_pdb.loc[i, 'Primary_Acc']
-    protein_motif = df.loc[df['UniProtID'] == uniprotid, 'Motif'].iloc[0]
     p = PDBParser()  
     structure = p.get_structure("X", pdb+'/'+pdb+'.pdb')
-    ppb = PPBuilder()
     model = structure[0]
-    for chain in model.get_chains():
-        sequence = ''
-        for pp in ppb.build_peptides(chain):
-            seq = pp.get_sequence()
-            sequence += seq
-        motif_position = sequence.rfind(protein_motif)
-        if motif_position != -1:
-            for i in chain.get_residues():
-                peptide_number = i.get_id()[1]
+    chains = dataframe_pdb(pdb, uniprotid)
+    if len(chains) > 0:
+        for chain in model.get_chains():
+            if str(chain.id) in chains:
+                peptide_chain, start_position, protein_motif = motif_pdb(chain, motif)
+                if peptide_chain != None:
+                    break
+        return pdb, peptide_chain, protein_motif, start_position
+    else:
+        for chain in model.get_chains():
+            peptide_chain, start_position, protein_motif = motif_pdb2(chain, motif)
+            if peptide_chain != None:
                 break
-            start_position = peptide_number+motif_position
-            peptide_chain = chain.id
-        else:
-            peptide_chain = ''
-    return pdb, peptide_chain, protein_motif, start_position
+        return pdb, peptide_chain, protein_motif, start_position
+                
 
 def foldx_run(pdbid, chain, protein_motif, start_position, motif_name):
     ''' Run the FoldX software for each crystal containing the motif.
@@ -69,7 +123,6 @@ def foldx_run(pdbid, chain, protein_motif, start_position, motif_name):
     print(f'Running FoldX for', pdbid, '...')
     process_1 = subprocess.run(command_line1, stdout=subprocess.DEVNULL)
     command_line2 = ['FoldX', '--command=PositionScan', '--pdb='+pdbid+'_Repair.pdb', '--clean-mode=2', '--positions='+positions, '--output-file='+pdbid, '--screen=false']
-    #print(' '.join(command_line2))
     process_2 = subprocess.run(command_line2, stdout=subprocess.DEVNULL)
 
 def pulida_df(df):

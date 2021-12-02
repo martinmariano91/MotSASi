@@ -1,26 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue Aug  3 15:20:23 2021
+Created on Sun Nov 21 09:20:22 2021
 
-Searchs in the human proteome for the motif specified with a regular expression.
-Outputs a 'csv' file with all the motifs found with the information about
-the protein that contains it and the position where it is located.
-
-Searchs for ClinVar variants occurring within the motifs of study. 
-Variants are grouped according to the reported Clinical Significance (ClinSig).
-Only missense variants with Criteria Provided and no conflicting 
-interpretations are considered. 
-The variant position in the protein sequence is changed to the position
-relative to the motif.
-
-Searchs for GnomAD variants occurring within the motifs of study. 
-Only missense variants are considered. The variant position in the protein 
-sequence is changed to the position relative to the motif.
-Variants with -log10(AF) <= 4 are considered as benign.
-
-@author: Mariano Martín
+@author: mariano
 """
+
+
 
 import sys
 import os
@@ -68,18 +54,8 @@ else:
     else:
         pass
     
-    print("Searching "+motif_name+" motif in the human proteome...")
-    
-    try:
-        shutil.rmtree('../'+motif_name+'_motif')
-    except:
-        pass
-    
-    os.mkdir('../'+motif_name+'_motif')
-    
-    df = MotifSearcher.HumanProteomeSearch(motif, motif_name)
-    #import pandas as pd
-    #df = pd.read_csv('../'+motif_name+'_motif/'+motif_name+'_motif.csv', index_col=0, sep='\t')
+    import pandas as pd
+    df = pd.read_csv('../'+motif_name+'_motif/'+motif_name+'_motif.csv', index_col=0, sep='\t')
     
     if df.empty:
         print('')
@@ -96,8 +72,7 @@ else:
             print('Bye Bye!')
             quit()
         else:
-            structure = PDB_download.pdbs_download(motif_name, protein_pdb)
-            print('')
+            pass
         
         print(f'Searching for variants affecting these motifs in ClinVar...')
         import ClinVarMotif
@@ -128,7 +103,7 @@ else:
             FoldXMotif.mean_foldx_matrix(crystals, motif_name)
         
         try:
-            os.chdir('../../MotSASi')
+            os.chdir('../../MotSASi_pipeline')
         except:
             pass
         
@@ -156,8 +131,3 @@ else:
         import GOMotif
         GOMotif.Motif_GO(positive_ctrl, motif_name)
         print('')
-        
-        print('Calculating the Secondary Structure...')
-        import JPREDMotif
-        JPREDMotif.jpred_run(positive_ctrl, mot, motif_name)
-        JPREDMotif.jpred_batch_processing(mot, motif_name)

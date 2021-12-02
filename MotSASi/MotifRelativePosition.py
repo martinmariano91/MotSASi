@@ -11,6 +11,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import matplotlib as mpl
+mpl.rcParams.update(mpl.rcParamsDefault)
 
 def RelativePosition(df, positive_ctrl, motif_name):
     '''Calculates the relative position of the motif.
@@ -24,9 +26,9 @@ def RelativePosition(df, positive_ctrl, motif_name):
     
     motifs = df
     
-    UniMotifs = [x for x, i in positive_ctrl]
+    UniMotifs = [x+'_'+str(i) for x, i in positive_ctrl]
     
-    positives = motifs[motifs.UniProtID.isin(UniMotifs)]
+    positives = motifs[motifs.ID_motif.isin(UniMotifs)]
     
     index = []
     for x, p in positive_ctrl:
@@ -51,12 +53,12 @@ def RelativePosition(df, positive_ctrl, motif_name):
     df['RelPos'] = norm_dist
     df.to_csv('../'+motif_name+'_motif/RelPos_'+motif_name+'.csv')
     
-    plt.figure()
+    plt.figure(facecolor='w')
     sns.kdeplot(norm_dist)
     plt.xticks([0, 0.2, 0.4, 0.6, 0.8, 1])
     plt.xlabel('Relative Position')
     plt.tight_layout()
-    plt.savefig('../'+motif_name+'_motif/'+motif_name+'_RelPos.png')
+    plt.savefig('../'+motif_name+'_motif/'+motif_name+'_RelPos.png', bbox_inches = "tight")
     
     
     

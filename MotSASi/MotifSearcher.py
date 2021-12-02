@@ -3,7 +3,7 @@
 """
 Created on Thu Apr 16 14:34:20 2020
 
-Search in the human proteome for the motif specified with a regular expression.
+Searches in the human proteome for the motif specified with a regular expression.
 Outputs a 'csv' file with all the motifs found with the information about
 the protein that contains it and the position where it is located.
 
@@ -13,8 +13,8 @@ NOTE: the folder were the script is run should also contain the file "uniprot_sp
 """
 import pandas as pd
 from Bio import SeqIO
-import gzip
 import re
+import urllib
 
 def m_append(m, record):
     ''' Save the info regarding the motif in study.
@@ -22,17 +22,34 @@ def m_append(m, record):
         Out: tuple of protein UniprotID, motif sequence, 
         motif start position, motif end position, 
         protein length, gene name.'''
+    ID = []
+    M = []
+    PI = []
+    PF = []
+    length = []
+    gene = []
     for x in re.finditer(m, str(record.seq)):
-        ID = record.id
-        M = x.group()
-        PI = x.start()+1
-        PF = x.end()+1
-        length = len(record.seq)
-        if 'gene_name_primary' in record.annotations.keys():
-            gene = record.annotations['gene_name_primary']
-        else:
-            gene = 'none'
-    
+        try:
+            uni_id = record.id.split('|')[1]
+            ID.append(uni_id)
+            M.append(x.group())
+            PI.append(x.start()+1)
+            PF.append(x.end()+1)
+            length.append(len(record.seq))
+            if 'GN=' in record.description:
+                gene.append(record.description.split('GN=')[1].split()[0])
+            else:
+                handle = urllib.request.urlopen("http://www.uniprot.org/uniprot/"+uni_id+".xml")
+                record = SeqIO.read(handle, "uniprot-xml")
+                if 'gene_name_primary' in record.annotations.keys():
+                    gene.append(record.annotations['gene_name_primary'])
+                else:
+                    try:
+                        gene.append(record.annotations['gene_name_synonym'])
+                    except:
+                        gene.append(None)
+        except:
+            pass                
     return ID, M, PI, PF, length, gene
 
 def HumanProteomeSearch(m, motif_name):
@@ -42,33 +59,31 @@ def HumanProteomeSearch(m, motif_name):
         In: motif regular expression and motif name.
         Out: DataFrame with motif hits information. The results are saved
         in a .csv file with the name of the motif. '''
-    IDtodos = []
     IDs = []
     PIs = []
     PFs = []
     Ms = []
     genes = []
     lengths = []    
-                
-    handle = gzip.open("uniprot_sprot.xml.gz", "rt")        
-    for record in SeqIO.parse(handle, "uniprot-xml"):
-        if record.annotations['organism'] == 'Homo sapiens (Human)':
-            mo = re.search(m, str(record.seq))
-            if mo:
-                IDtodos.append(record.id)         
-                ID, M, PI, PF, length, gene = m_append(m, record)         
-                IDs.append(ID)
-                Ms.append(M)
-                PIs.append(PI)
-                PFs.append(PF)
-                lengths.append(length)
-                genes.append(gene)
+    
+    fastas = SeqIO.parse('uniprot_sprot_h.fasta','fasta')
+    #handle = gzip.open("uniprot_sprot_h.xml.gz", "rt")        
+    for record in fastas:
+        mo = re.search(m, str(record.seq))
+        if mo: 
+            ID, M, PI, PF, length, gene = m_append(m, record)         
+            IDs += ID
+            Ms += M
+            PIs += PI
+            PFs += PF
+            lengths += length
+            genes += gene
                 
     listazip=list(zip(IDs,genes,lengths, Ms, PIs, PFs))
     df=pd.DataFrame(listazip, columns=['UniProtID','Gene', 'Protein_length', 'Motif', 'Start', 'End'])
     df.to_csv('../'+motif_name+'_motif/'+motif_name+'_motif.csv', sep='\t') 
      
-    print(motif_name+' motif found in '+str(len(IDtodos))+' human proteins')
+    print(motif_name+' motif found in '+str(len(df.UniProtID.unique()))+' human proteins')
     print('Total hits in the human proteome: '+str(len(Ms)))          
     
     return df

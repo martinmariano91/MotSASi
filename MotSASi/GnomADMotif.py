@@ -35,6 +35,7 @@ def iterator(IDs, df_motif, variants, d, founds, dfs):
                 if not variants2.empty:
                     ben_var_mot = []
                     varid = []
+                    AF = []
                     for i in variants2.index: 
                         for e in range(len(motifs1.Motif.iloc[z])):
                             # Check variant-motif position and amino acid
@@ -45,15 +46,18 @@ def iterator(IDs, df_motif, variants, d, founds, dfs):
                                     if -math.log10(variants2.AF.loc[i]) <= 4:
                                         ben_var_mot.append(change[:3]+str(e+1)+change[-3:])
                                         varid.append(variants2.VariantID.loc[i])
+                                        AF.append(variants2.AF.loc[i])
                     df = pd.DataFrame({'Benign':pd.Series(ben_var_mot, dtype=str)})
-                    df['ID'] = g+'_'+str(n)
-                    df['VariantID'] = varid
+                    df['ID'] = g
+                    df['MotifPosition'] = n
+                    df['VarID'] = varid
+                    df['AF'] = AF
+                    df = df[['ID', 'MotifPosition', 'Benign', 'AF', 'VarID']]
                     dfs.append(df)
 
 def GnomADMotif(df_motif, motif_name):
     ''' Iterates over chromosomes and creates the final dataframe
     of GnomAD variants with -log10(AF)<4 that occurr within the motif'''
-    chromosomes = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,'X','Y']
     d = {'C': 'Cys', 'D': 'Asp', 'S': 'Ser', 'Q': 'Gln', 'K': 'Lys',
          'I': 'Ile', 'P': 'Pro', 'T': 'Thr', 'F': 'Phe', 'N': 'Asn', 
          'G': 'Gly', 'H': 'His', 'L': 'Leu', 'R': 'Arg', 'W': 'Trp', 
@@ -61,18 +65,18 @@ def GnomADMotif(df_motif, motif_name):
     UniMotifs = df_motif.UniProtID.tolist()
     dfs = []
     founds = []
+    chromosomes = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,'X','Y']
     for x in chromosomes:    
-        variants = pd.read_csv('GnomAD/'+str(x)+'.csv', sep='\t')
-        variants.drop(columns='Unnamed: 0', inplace=True)
-        variants = variants[variants['Effect']=='missense_variant']
-        variants['ProteinPosition'] = variants['ProteinPosition'].astype(float)
-        variants.reset_index(inplace=True, drop=True)
-        #print(f'Chromosome ', x)
+        variants = pd.read_csv('GnomAD/'+str(x)+'.csv', sep='\t', index_col=0)
         IDs = [u for u in UniMotifs if u not in founds]    
         iterator(IDs, df_motif, variants, d, founds, dfs)
-    df_final = pd.concat(dfs)
-    df_final.drop_duplicates(keep='first', inplace=True)  
-    df_final.to_csv('../'+motif_name+'_motif/'+motif_name+'_motif_GnomADVariants.csv')              
-    print(f'Total number of GnomAD variants (-log10(AF)<4) affecting', motif_name, 'motif:', len(df_final))      
+    if len(dfs) > 0:
+        df_final = pd.concat(dfs)
+        df_final.drop_duplicates(keep='first', inplace=True)  
+        df_final.reset_index(inplace=True, drop=True)
+        df_final.to_csv('../'+motif_name+'_motif/'+motif_name+'_motif_GnomADVariants.csv')              
+        print(f'Total number of GnomAD variants (-log10(AF)<4) affecting', motif_name, 'motif:', len(df_final))      
+    else:
+        print('There are no GnomAD variants (-log10(AF)<4) reported within these motifs...')
 
 
