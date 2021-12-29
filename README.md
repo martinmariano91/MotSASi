@@ -1,8 +1,9 @@
 
 # MotSASi: Functional Short Linear Motifs (SLiMs) prediction based on genomic single nucleotide variants and structural data
 
-Martín M, Modenutti CP, Nicola JP and Martí MA
+Martín M, Brunello FG, Modenutti CP, Nicola JP and Martí MA
 
+Pre-print:
 https://www.biorxiv.org/content/10.1101/2021.08.05.455287v1
 
 (under major revision in *Biochimie*)
@@ -19,7 +20,6 @@ If you find this strategy useful, please cite us.
 
 It is recommended to run the scripts within Anaconda Environment. The Jpred API is included in the MotSASi folder.
 
-MotSASi has to be run in different steps:
 
 * 1 - MotSASi_1.py 
     
@@ -52,29 +52,4 @@ MotSASi has to be run in different steps:
     In the command line put the regular expression of the motif that you want to study, this expression but separated by dots and the ELM name of this motif.
     (Everything according to ELM nomenclature. i.e. python3 MotSASi_1.py [RK]P[^P][^P]L.[LIVMF] RK.P.^P.^P.L.x.LIVMF DOC_MAPK_JIP1_4)
     
-    This script builds a "motif specific folder" where all the outputs are stored and is located in the previous folder from where the script is run.
-
-* 2 - MotSASi_2.py (in progress)
-    
-    -h or -help:
-      
-     Gets the features of the positive control group of this motif (Tolerance Matrix, ConservationScore, Secondary Structure Probability, Relative Position).
-      
-     Evaluates if the reported benign or pathogenic variants within the motifs are in accordance or not with the Tolerance Matrix. 
-     Not in accordance: discarded motif.
-     In accordance: Calculates ConservationScore, Secondary Structure Probability and Relative Position. Collects GO terms from UniProt. 
-     
-     Checks if the features values are within the positive control group values.
-     
-     Calculates the "MotSASi Score": +++ (high confidence, in accordance with the Tolerance Matrix and same features as the positive control), ++ (medium confidence, in accordance with the Tolerance Matrix but some differences in GO terms), + (low confidence, in disagreeement with the Tolerance Matrix or several differences with the features values of the positive control), - (do not have benign or pathogenic variants within the motif).
-     
-     Adds this information to the "motif_name_motif.csv" file.
-      
-     <ins>For running:</ins>
-     
-     Use the same parameter arquitecture of the MotSASi_1.py script
-      
-      
-      
-    
-    
+    This script builds a "motif specific folder" where all the outputs are stored and is located in the previous folder from where the script is run.   
