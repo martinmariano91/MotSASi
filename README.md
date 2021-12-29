@@ -54,7 +54,8 @@ It is recommended to run the scripts within Anaconda Environment. The Jpred API 
     
     This script builds a "motif specific folder" where all the outputs are stored and is located in the previous folder from where the script is run.   
 * 2 - MotSASi_2.py: FILTER
-    (This script is not fully automated yet)
+    
+    (not fully automated yet)
     
     Performs filtering according to the specific iteration step.
     
