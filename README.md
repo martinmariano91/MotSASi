@@ -70,6 +70,6 @@ It is recommended to run the scripts within Anaconda Environment. The Jpred API 
     
     In the command line put the name of the folder that contain the tables of your motif of interest, the motif name, dot-separated motif, type of iteration to be performed and txt file with the ID_motif ("uniprotid_startposition") of the motifs considered as positives.
     
-    **Note**: This script is still under development. The work done in the pre-print has be manually curated and only partially automated.
+    **Note**: This script is still under development. The work done in the pre-print has been manually curated and only partially automated.
     
     
