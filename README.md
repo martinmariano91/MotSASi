@@ -53,6 +53,7 @@ It is recommended to run the scripts within Anaconda Environment. The Jpred API 
     (Everything according to ELM nomenclature. i.e. python3 MotSASi_1.py [RK]P[^P][^P]L.[LIVMF] RK.P.^P.^P.L.x.LIVMF DOC_MAPK_JIP1_4)
     
     This script builds a "motif specific folder" where all the outputs are stored and is located in the previous folder from where the script is run.   
+
 * 2 - MotSASi_2.py: FILTER
     
     (not fully automated yet)
@@ -67,7 +68,7 @@ It is recommended to run the scripts within Anaconda Environment. The Jpred API 
     
     Use the Unix Termial. Locate in the folder that contains this script and run it from there.
     
-    In the command line put the name of the folder that contain the tables of your motif of interest, the motif name, dot-separated motif, type of iteration to be performed and txt file with the ID_motif ("uniprotid_startposition") of the motif considered positives.
+    In the command line put the name of the folder that contain the tables of your motif of interest, the motif name, dot-separated motif, type of iteration to be performed and txt file with the ID_motif ("uniprotid_startposition") of the motifs considered as positives.
     
     **Note**: This script is still under development. The work done in the pre-print has be manually curated and only partially automated.
     
