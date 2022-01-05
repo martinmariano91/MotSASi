@@ -16,6 +16,10 @@ If you find this strategy useful, please cite us.
 
 ----
 
+Supplemenatary material is provided in this repository. Some tables have binary features, where value == 1 is True or "Yes" or "in accordance to the positive control" (depending on the table), while value == 0 is the opposite. 
+
+----
+
 **For running MotSASi Python2.7, Python3.7, C-Shell (csh) package, Biopython package, FoldX and ClustalO must be installed previously.**
 
 It is recommended to run the scripts within Anaconda Environment. The Jpred API is included in the MotSASi folder.
