@@ -1,0 +1,12 @@
+['P14679', 'Q14524', 'Q14118', 'Q9P2L0', 'O60602', 'O75445', 'P11362', 'Q96Q05', 'O43699', 'Q9NZP6', 'Q06187']
+
+
+descartados:
+P14679, O60602, O43699, Q9NZP6, Q06187, Q14118, O75445, P11362
+
+
+Q14524 tiene dos motivos WE, la variante está reportada en un motivo que cae en una región extracelular.
+Q96Q05 la variante no aparece luego en clinvar
+
+Q9P2L0 las variantes son patogénicas pero no se explica por qué
+

@@ -1,0 +1,10 @@
+,ID,MotifPosition,Variant,Pathogenic,Benign
+0,Q08426,721,Ser1Gly,0,1
+1,Q6PEX7,204,Ser1Thr,0,1
+2,P36507,398,Val3Met,0,1
+3,P09493,282,Thr1Ser,0,1
+4,Q6DN12,876,Ala2Thr,0,1
+5,Q04656,1498,Leu3Val,0,1
+6,Q8N695,608,Arg2Cys,0,1
+7,Q9UBP0,614,Thr1Ile,1,0
+8,Q5JU85,1486,Val3Ala,1,0
