@@ -17,7 +17,7 @@ If you find this strategy useful, please cite us.
 ----
 
 Supplemenatary material is provided in this repository. Some tables have binary features, where value == 1 is True or "Yes" or "in accordance to the positive control" (depending on the table), while value == 0 is the opposite. 
-Supplementary Table 1 have the filtering information regarding the three motifs thoroughly analyzed in our work. Each of the motif mentioned has been coded as UniProtID+_+StartMotifPosition.
+Supplementary Table 1 have the results of filtering of the three motifs thoroughly analyzed in our work. Each of the motif mentioned has been coded as UniProtID+_+StartMotifPosition.
 
 ----
 
