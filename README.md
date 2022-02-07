@@ -3,9 +3,9 @@
 
 Martín M, Brunello FG, Modenutti CP, Nicola JP and Martí MA
 
-Pre-print doi (bioRxiv repository): https://doi.org/10.1101/2021.08.05.455287
+Pre-print (bioRxiv repository): https://doi.org/10.1101/2021.08.05.455287
 
-Final accepted article doi (Biochimie journal): https://doi.org/10.1016/j.biochi.2022.02.002
+Final accepted article (Biochimie journal): https://doi.org/10.1016/j.biochi.2022.02.002
 
 
 ----
