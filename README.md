@@ -3,10 +3,10 @@
 
 Martín M, Brunello FG, Modenutti CP, Nicola JP and Martí MA
 
-Pre-print:
-https://www.biorxiv.org/content/10.1101/2021.08.05.455287v1
+Pre-print doi (bioRxiv repository): https://doi.org/10.1101/2021.08.05.455287
 
-(under major revision in *Biochimie*)
+Final accepted article doi (Biochimie journal): https://doi.org/10.1016/j.biochi.2022.02.002
+
 
 ----
 
@@ -75,6 +75,6 @@ It is recommended to run the scripts within Anaconda Environment. The Jpred API 
     
     In the command line put the name of the folder that contain the tables of your motif of interest, the motif name, dot-separated motif, type of iteration to be performed and txt file with the ID_motif ("uniprotid_startposition") of the motifs considered as positives.
     
-    **Note**: This script is still under development. The work done in the pre-print has been manually curated and only partially automated.
+    **Note**: This script is still under development. The work done in the article has been manually curated and only partially automated.
     
     
